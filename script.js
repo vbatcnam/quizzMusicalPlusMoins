@@ -30,13 +30,11 @@ function getRandomInt(max) {
 	}
 	
 function piocheUneFreqence(){
-	console.log(getRandomInt(12));
-	return tabFrequences[getRandomInt(12)];
+	let pioche = tabFrequences[getRandomInt(12)]
+	return pioche;
 }
 
 function getReponse(hertz1, hertz2){
-	console.log('hertz 1 : ' + hertz1);
-	console.log('hertz 2 : ' + hertz2);
 	if(hertz1 < hertz2){
 		console.log('monte');
 		return 'monte';
@@ -62,27 +60,42 @@ var tabFrequences =[32.703,65.406,130.81,261.63,523.25,1046.5,2093,4186,8372,167
 	58.27,116.54,233.08,466.16,932.33,1864.7,3729.3,7458.6,14917,29834,
 	61.735,123.47,246.94,493.88,987.77,1975.5,3951.1,7902.1,15804,31609];
 
-//récupère les boutons.
-var boutonsNote1 = document.getElementById('note1');
-var boutonsNote2 = document.getElementById('note2');
+//récupère les boutons. 
+var boutonsNotes = [
+	document.getElementById('note1'),
+	document.getElementById('note2')
+];
 
-var monte = document.getElementById('monte');
-var descend = document.getElementById('descend');
-var equal = document.getElementById('equal');
-var passe = document.getElementById('passe');
+var boutonsReponses = [
+	document.getElementById('monte'),
+	document.getElementById('descend'),
+	document.getElementById('equal'),
+	document.getElementById('passe')
+]
 
-//attribueFreqence
-var note1 = piocheUneFreqence();
-var note2 = piocheUneFreqence();
-var resultat = getReponse(note1, note2);
+//attribueFreqence et joue la note
+var notes = [];
+for(let boutonNote of boutonsNotes){
+	let hertz = piocheUneFreqence();
+	notes.push(hertz);
+	boutonNote.addEventListener('mousedown',function(){createNote(hertz);});
+	boutonNote.addEventListener('mouseup',function(){oscillateur.stop();});
+}
 
-//joue les notes
-boutonsNote1.addEventListener('mousedown',function(){createNote(note1);});
-boutonsNote2.addEventListener('mousedown',function(){createNote(note2);});
-
-boutonsNote1.addEventListener('mouseup',function(evt){oscillateur.stop();});
-boutonsNote2.addEventListener('mouseup',function(evt){oscillateur.stop();});
+var resultat = getReponse(notes[0],notes[1]);
+console.log('resultat' + resultat);
 
 //récupère la réponse du joueur
+var score = 0;
+for(let boutonReponse of boutonsReponses){
+	boutonReponse.addEventListener('click',function(){
+		let reponseJoueur = boutonReponse.id;
+		console.log( ' reponse du joueur : '+ reponseJoueur);
+		if(reponseJoueur === resultat){
+			score ++;
+			console.log('Score : ' + score);
+			alert("Bravo !")
+		}else{alert("Essaye encore !")}
+	});
+}
 
-var reponseJoueur = "";
