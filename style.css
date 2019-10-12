@@ -25,7 +25,10 @@ div{
 	text-align: center;
 	font-size: 2em;
 	color: rgb(205, 92, 92);
+}
 
+#zoneInfo p {
+	display: inline;
 }
 
 #zoneMusicale{
@@ -35,14 +38,6 @@ div{
 #action{
 	text-align: center;
 }
-
-#zoneScore{
-	text-align: center;
-	font-size: 2em;
-	color: rgb(205, 92, 92);
-}
-
-
 
 button{
 	padding: 10px;
