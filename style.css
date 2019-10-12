@@ -22,13 +22,15 @@ div{
 }
 
 #zoneInfo{
-	text-align: center;
-	font-size: 2em;
+	display: flex;
+	justify-content: space-around;
+	font-size: 1.3em;
 	color: rgb(205, 92, 92);
+	/* border: 1px solid red; */
 }
 
 #zoneInfo p {
-	display: inline;
+	/* border: 1px solid blue; */
 }
 
 #zoneMusicale{

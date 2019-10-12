@@ -12,7 +12,6 @@ C'est un module de traitement audio AudioNode qui crée un signal sinusoïdal à
 */
 var oscillateur;
 
-
 function createNote(hertz){
 	oscillateur = contexteAudio.createOscillator();
 	oscillateur.frequency.value = hertz;
@@ -47,55 +46,123 @@ function getReponse(hertz1, hertz2){
 	}
 }
 
-var tabFrequences =[32.703,65.406,130.81,261.63,523.25,1046.5,2093,4186,8372,16744,
-	34.648,69.296,138.59,277.18,554.37,1108.7,2217.5,4434.9,8869.8,17740,
-	36.708,73.416,146.83,293.66,587.33,1174.7,2349.3,4698.6,9397.3,18795,
-	38.891,77.782,155.56,311.13,622.25,1244.5,2489,4978,9956.1,19912,
-	41.203,82.407,164.81,329.63,659.26,1318.5,2637,5274.10548,21096,
-	43.654,87.307,174.61,349.23,698.46,1396.9,2793.8,5587.7,11175,22351,
-	46.249,92.499,185,369.99,739.99,1480,2960,5919.9,11840,23680,
-	48.999,97.999,196,392,783.99,1568,3136,6271.9,12544,25088,
-	51.913,103.83,207.65,415.3,830.61,1661.2,3322.4,6644.9,13290,26580,
-	55,110,220,440,880,1760,3520,7040,14080,28160,
-	58.27,116.54,233.08,466.16,932.33,1864.7,3729.3,7458.6,14917,29834,
-	61.735,123.47,246.94,493.88,987.77,1975.5,3951.1,7902.1,15804,31609];
+var tabFrequences =[130.81,261.63,523.25,
+	138.59,277.18,554.37,
+	146.83,293.66,587.33,
+	155.56,311.13,622.25,
+	164.81,329.63,659.26,
+	174.61,349.23,698.46,
+	185,369.99,739.99,
+	196,392,783.99,1568,
+	207.65,415.3,830.61,
+	440,880,1760,3520,
+	233.08,466.16,932.33,
+	246.94,493.88,987.77];
 
-//récupère les boutons. 
-var boutonsNotes = [
-	document.getElementById('note1'),
-	document.getElementById('note2')
-];
+//récupère les zones. 
+var zoneMusicale =  document.getElementById('zoneMusicale');
+var zoneAction =  document.getElementById('action');
 
-var boutonsReponses = [
-	document.getElementById('monte'),
-	document.getElementById('descend'),
-	document.getElementById('equal'),
-	document.getElementById('passe')
-]
+//initialisation des variables
+//=============================
+var boutonsNotes, boutonsReponses;
 
-//attribueFreqence et joue la note
+//gestion de la partie
+var QuestionNum = document.getElementById('QuestionNum');
+var totalQuestions = document.getElementById('totalQuestions');
+var point = document.getElementById('point');
+var total = document.getElementById('total');
+
 var notes = [];
-for(let boutonNote of boutonsNotes){
-	let hertz = piocheUneFreqence();
-	notes.push(hertz);
-	boutonNote.addEventListener('mousedown',function(){createNote(hertz);});
-	boutonNote.addEventListener('mouseup',function(){oscillateur.stop();});
-}
-
-var resultat = getReponse(notes[0],notes[1]);
-console.log('resultat' + resultat);
-
-//récupère la réponse du joueur
+var resultat;
 var score = 0;
-for(let boutonReponse of boutonsReponses){
-	boutonReponse.addEventListener('click',function(){
-		let reponseJoueur = boutonReponse.id;
-		console.log( ' reponse du joueur : '+ reponseJoueur);
-		if(reponseJoueur === resultat){
-			score ++;
-			console.log('Score : ' + score);
-			alert("Bravo !")
-		}else{alert("Essaye encore !")}
-	});
+var reponseJoueur;
+var numPartieEnCours = 1;
+var nbrePartieRestante = 10;
+
+//fonctions
+//==========
+function createBouton(parent, id,contenu ){
+	let bouton = document.createElement('button');
+	bouton.id = id;
+	const texte = document.createTextNode(contenu)
+	bouton.appendChild(texte)
+	parent.appendChild(bouton);
+	return bouton;
 }
 
+function rendBoutonsInteractifs(){
+	for(let boutonNote of boutonsNotes){
+		let hertz = piocheUneFreqence();
+		notes.push(hertz);
+		boutonNote.addEventListener('mousedown',function(){createNote(hertz);});
+		boutonNote.addEventListener('mouseup',function(){oscillateur.stop();});
+	}
+}
+
+function verifieReponse(){
+	if(reponseJoueur === "passe"){
+		return;
+	}else if(reponseJoueur === resultat){
+		ajoute1Point();
+		return;
+	}else{
+		retire2Points();
+		return;
+	}
+}
+
+function ajoute1Point(){
+	score += 2;
+	console.log('Score : ' + score);
+	alert("Bravo ! Tu gagnes 2 points")
+}
+function retire2Points(){
+	score -= 1;
+	console.log('Score : ' + score);
+	alert("Dommage ! Tu perds 1 point")
+}
+
+//partie de quiz
+//==============
+function createQuiz(nbrePartieRestante){
+	if(nbrePartieRestante > 0 ){
+		//mise à jour des éléments
+		zoneMusicale.innerHTML = "";
+		zoneAction.innerHTML = "";
+		QuestionNum.innerText = numPartieEnCours;
+		totalQuestions.innerText = 10;
+		point.innerText = score;
+		total.innerText = 20;
+		
+		//création des boutons
+		boutonsNotes = [
+			createBouton(zoneMusicale,'note1', 'note 1'),
+			createBouton(zoneMusicale, 'note2', 'note 2')
+		];
+		
+		boutonsReponses = [
+			createBouton(zoneAction,'monte', 'monte'),
+			createBouton(zoneAction,'descend', 'descend'),
+			createBouton(zoneAction,'equal', 'equal'),
+			createBouton(zoneAction,'passe', 'passe'),
+		];
+		
+		rendBoutonsInteractifs();
+		
+		resultat = getReponse(notes[0],notes[1]);
+		console.log('resultat' + resultat);
+		
+		for(let boutonReponse of boutonsReponses){
+			boutonReponse.addEventListener('click', function(evt){
+				reponseJoueur = boutonReponse.id;
+				verifieReponse();
+				nbrePartieRestante -= 1;
+				numPartieEnCours ++;
+				createQuiz(nbrePartieRestante);
+			});
+		}
+	}
+}
+
+createQuiz(nbrePartieRestante);
