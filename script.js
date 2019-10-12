@@ -85,4 +85,4 @@ boutonsNote2.addEventListener('mouseup',function(evt){oscillateur.stop();});
 
 //récupère la réponse du joueur
 
-var reponseJoueur = 
+var reponseJoueur = "";
