@@ -35,10 +35,10 @@ function piocheUneFreqence(){
 
 function getReponse(hertz1, hertz2){
 	if(hertz1 < hertz2){
-		console.log('monte');
+		console.log('monte', hertz1, hertz2);
 		return 'monte';
 	}else if(hertz1 > hertz2){
-		console.log('descend');
+		console.log('descend', hertz1, hertz2);
 		return 'descend';
 	}else{
 		console.log('equal');
@@ -73,7 +73,7 @@ var totalQuestions = document.getElementById('totalQuestions');
 var point = document.getElementById('point');
 var total = document.getElementById('total');
 
-var notes = [];
+var notes; 
 var resultat;
 var score = 0;
 var reponseJoueur;
@@ -126,8 +126,9 @@ function retire2Points(){
 //partie de quiz
 //==============
 function createQuiz(nbrePartieRestante){
-	if(nbrePartieRestante > 0 ){
+	if(nbrePartieRestante >= 0 ){
 		//mise à jour des éléments
+		notes = [];
 		zoneMusicale.innerHTML = "";
 		zoneAction.innerHTML = "";
 		QuestionNum.innerText = numPartieEnCours;
