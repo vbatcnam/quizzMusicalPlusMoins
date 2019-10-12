@@ -1,0 +1,62 @@
+body{
+	background-color: rgb(240, 230, 140);
+
+}
+
+h1{
+	text-align: center;
+	color: rgb(205, 92, 92);
+}
+
+div{
+	margin-top: 50px;
+}
+
+#intro{
+	padding: 10px 10px 10px 100px;
+	margin-left: 50px;
+	margin-right: 50px;
+	border: 1px solid blue;
+	border-radius: 20px;
+	background-color: rgb(240, 248, 255);
+}
+
+#zoneInfo{
+	text-align: center;
+	font-size: 2em;
+	color: rgb(205, 92, 92);
+
+}
+
+#zoneMusicale{
+	text-align: center;
+}
+
+#action{
+	text-align: center;
+}
+
+#zoneScore{
+	text-align: center;
+	font-size: 2em;
+	color: rgb(205, 92, 92);
+}
+
+
+
+button{
+	padding: 10px;
+	margin: 5px;
+}
+
+#zoneMusicale button{
+	color: rgb(75, 0, 130);
+	background-color: rgb(135, 206, 250);
+	border-radius: 20px;
+}
+
+#action button{
+	color: rgb(75, 0, 130);
+	background-color: rgb(230, 230, 250);
+	border-radius: 20px;
+}

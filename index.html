@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="style.css"/>
+		<title>Quizz musical : plus ou moins </title>
+	</head>
+	<body>
+		<h1>Quizz musical "plus" ou "moins"</h1>
+		<div id="intro">
+			<p>Clique sur les notes et devine si ça monte, si ça descend ou si c'est equal ( sons identiques ).</p>
+			<p>Tu peux cliquer autant de fois que tu veux pour rejouer les notes.</p>
+			<p>Si tu ne sais pas, tu passes. Attention ! Si tu réponds faut tu perds 1 point. Si tu répond bien, tu gagnes 2 points.</p>
+			<p>Bon jeu !</p>
+		</div>
+		<div id="zoneInfo">
+			<p>
+				<span id="QuestionNum"></span> / 
+				<span id="totalQuestions"></span>
+			</p>
+		</div>
+		<div id="zoneMusicale">
+			<button id="note1">Note 1</button>
+			<button id="note2">Note 2</button>
+		</div>
+		<div id="action">
+			<button id="monte">Monte</button>
+			<button id="descend">Descend</button>
+			<button id="equal">equal</button>
+			<button id="passe">Passe</button>
+		</div>
+		<div id="zoneScore">
+			<p>
+				<span id="point"></span> / 
+				<span id="total"></span>
+			</p>
+		</div>
+		<script src="script.js"></script>
+	</body>
+</html>
