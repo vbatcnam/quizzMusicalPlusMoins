@@ -1,15 +1,17 @@
 'use strict';
-
 /**
-L'interface AudioContext représente un graphe de traitement audio. 
-Un contexte audio contrôle à la fois la création des nœuds qu'il contient et l'exécution du traitement audio, ou du décodage. On commence toujours par créer un contexte audio, et tout ce qui va se passer ensuite se situera dans ce contexte.
+	Auteur : Véronique Lion
+	Date création : 8/10/2019
+	Copyright : © Véronique Lion 2019
+	
+	En projet : A la fin de la partie, proposer un quitte ou double en ne jouant que les fausses réponses et les "passe".
+	Il faut aussi contrôler les volumes car les notes hautes sont plus fortes.
 */
+
+/**Indispensable pour le webAudioAPI.*/
 var contexteAudio = new AudioContext();
 
-/**
-L'interface OscillatorNode représente un signal périodique. 
-C'est un module de traitement audio AudioNode qui crée un signal sinusoïdal à une fréquence donnée — c'est-à-dire génère une tonalité constante.
-*/
+/** C'est le module de traitement audio génère une tonalité.*/
 var oscillateur;
 
 function createNote(hertz){
@@ -17,7 +19,7 @@ function createNote(hertz){
 	oscillateur.frequency.value = hertz;
 
 	/** oscillateur.type :
-	Indique la forme de l'onde générée.  Les valeurs sont "sine" (valeur par défault), "square", "sawtooth", "triangle".
+		Indique la forme de l'onde.  Les valeurs sont "sine" (par défaut), "square", "sawtooth", "triangle".
 	*/
 	oscillateur.type = "triangle";
 	oscillateur.connect(contexteAudio.destination);
@@ -102,6 +104,7 @@ function rendBoutonsInteractifs(){
 
 function verifieReponse(){
 	if(reponseJoueur === "passe"){
+		showReponse();
 		return;
 	}else if(reponseJoueur === resultat){
 		ajoute1Point();
@@ -115,18 +118,24 @@ function verifieReponse(){
 function ajoute1Point(){
 	score += 2;
 	console.log('Score : ' + score);
-	alert("Bravo ! Tu gagnes 2 points")
+	alert("Bravo ! Tu gagnes 2 points");
 }
+
 function retire2Points(){
 	score -= 1;
 	console.log('Score : ' + score);
-	alert("Dommage ! Tu perds 1 point")
+	alert("Dommage ! Tu perds 1 point");
+}
+
+function showReponse(){
+	alert("La réponse était : " + resultat);
+	//donner la possibilité de réécouter les 2 notes.
 }
 
 //partie de quiz
 //==============
 function createQuiz(nbrePartieRestante){
-	if(nbrePartieRestante >= 0 ){
+	if(nbrePartieRestante > 0 ){
 		//mise à jour des éléments
 		notes = [];
 		zoneMusicale.innerHTML = "";
@@ -160,10 +169,26 @@ function createQuiz(nbrePartieRestante){
 				verifieReponse();
 				nbrePartieRestante -= 1;
 				numPartieEnCours ++;
+				point.innerText = score;
 				createQuiz(nbrePartieRestante);
 			});
 		}
+	}else{
+		zoneMusicale.innerHTML = "";
+		zoneAction.innerHTML = "";
+		let p = document.createElement('p');
+		const texte = document.createTextNode("Bien joué !")
+		p.appendChild(texte)
+		zoneMusicale.appendChild(p);
+		let reponse = confirm("Bien joué ! Veux tu refaire une parie ?");
+		if(reponse){
+			numPartieEnCours = 1;
+			nbrePartieRestante = 10;
+			score = 0;
+			createQuiz(nbrePartieRestante);
+		}
 	}
+
 }
 
 createQuiz(nbrePartieRestante);
